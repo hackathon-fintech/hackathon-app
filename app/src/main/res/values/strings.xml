@@ -1,6 +1,33 @@
 <resources>
     <string name="app_name">Banco Inteligente</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="button_cashdesk">Cash Desk</string>
+    <string name="button_executive">Executive</string>
+    <string name="button_procedures">Customer service</string>
+
+    <string name="title_section1">Procedures</string>
+    <string name="title_section2">FAQ</string>
+    <string name="title_section3">Login</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="title_activity_cashdesk">Cash Desk</string>
+    <string name="button_deposit_cash">Cash deposit</string>
+    <string name="button_document_deposit">Document deposit</string>
+    <string name="title_activity_deposits">Deposits</string>
+    <string name="button_deposits">Deposits</string>
+    <string name="button_checks">Checks and/or documents</string>
+    <string name="button_billPayment">Bill payment</string>
+    <string name="title_activity_bill_payment">Bill payment</string>
+    <string name="button_registeredAccount">Registered account</string>
+    <string name="button_newAccount">New account</string>
+    <string name="button_emergencies">Emergencies</string>
+    <string name="title_section4">Configuration</string>
+    <string name="title_activity_customer_service">Customer Service</string>
+    <string name="button_request_checkbook">Request checkbook</string>
+    <string name="button_request_promissory">Promissory retreat</string>
+
 </resources>
