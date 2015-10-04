@@ -96,12 +96,11 @@ public class MainActivity extends ActionBarActivity
                                         .setActionTextColor(Color.WHITE)
                                         .show();
                             }
-                            App.isInside = false;
                             if (App.userAccount != null){
                                 App.userAccount.setBranchStatus("");
                                 new UpdateUserStatus("UPDATE_INSIDE").execute();
                             }
-
+                            App.isInside = false;
                         }
                         else {
                             for (Beacon rangedBeacon : beacons) {
