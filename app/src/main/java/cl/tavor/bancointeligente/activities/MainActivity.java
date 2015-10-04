@@ -72,11 +72,6 @@ public class MainActivity extends ActionBarActivity
             }
         }
 
-
-
-        final Gson gson = new Gson();
-
-
         App.beaconManager = new BeaconManager(this);
         App.beaconManager.setRangingListener(new BeaconManager.RangingListener() {
             @Override
@@ -89,19 +84,19 @@ public class MainActivity extends ActionBarActivity
                         //System.out.println("Region found: " + gson.toJson(region));
                         if (beacons.isEmpty()){
                             System.out.println("No beacons in range ------ ");
-                            if (App.userAccount != null){
-                                if (App.isInside){
-                                    Snackbar.make(findViewById(android.R.id.content), "Gracias por venir!", Snackbar.LENGTH_LONG)
-                                            .setAction("Ok", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
+                            if (App.isInside){
+                                Snackbar.make(findViewById(android.R.id.content), "Gracias por venir!", Snackbar.LENGTH_LONG)
+                                        .setAction("Ok", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
 
-                                                }
-                                            })
-                                            .setActionTextColor(Color.WHITE)
-                                            .show();
-                                }
-                                App.isInside = false;
+                                            }
+                                        })
+                                        .setActionTextColor(Color.WHITE)
+                                        .show();
+                            }
+                            App.isInside = false;
+                            if (App.userAccount != null){
                                 String status = "";
                                 new UpdateUserStatus().execute(status);
                             }
@@ -112,7 +107,7 @@ public class MainActivity extends ActionBarActivity
                                 System.out.println("Beacon in Range --- Reg:" + region.getIdentifier() + " Meters = " + Utils.computeProximity(rangedBeacon) + " +- " + Utils.computeAccuracy(rangedBeacon));
                                 System.out.println("isInside --- " + String.valueOf(App.isInside));
                                 if (region.getIdentifier().equals("SAC") &&
-                                        (Utils.computeProximity(rangedBeacon) == Utils.Proximity.NEAR || Utils.computeProximity(rangedBeacon) == Utils.Proximity.IMMEDIATE || Utils.computeProximity(rangedBeacon) == Utils.Proximity.FAR) && !App.isInside && App.userAccount != null){
+                                        (Utils.computeProximity(rangedBeacon) == Utils.Proximity.NEAR || Utils.computeProximity(rangedBeacon) == Utils.Proximity.IMMEDIATE || Utils.computeProximity(rangedBeacon) == Utils.Proximity.FAR) && !App.isInside){
                                     App.isInside = true;
                                     if (App.sacRequested){
                                         Snackbar.make(findViewById(android.R.id.content), "Bienvenido! Su ejecutivo lo está esperando.", Snackbar.LENGTH_LONG)
@@ -150,10 +145,10 @@ public class MainActivity extends ActionBarActivity
                                                 .setActionTextColor(Color.WHITE)
                                                 .show();
                                     }
-
-                                    String status = "INSIDE";
-                                    new UpdateUserStatus().execute(status);
-
+                                    if (App.userAccount != null){
+                                        String status = "INSIDE";
+                                        new UpdateUserStatus().execute(status);
+                                    }
                                 }
 
                             }
@@ -183,6 +178,7 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onDestroy() {
+        App.isInside = false;
         try {
             App.beaconManager.stopRanging(App.SAC_REGION);
             App.beaconManager.disconnect();
@@ -290,7 +286,7 @@ public class MainActivity extends ActionBarActivity
                 Gson gson = new Gson();
                 UserAccount account = usr.login("53101275","68641");
                 App.userAccount = account;
-                System.out.println("Result = " + gson.toJson(account));
+                Log.i(this.getClass().getSimpleName(), "Login Result = " + gson.toJson(account));
             } catch (ApiException e) {
                 e.printStackTrace();
             }

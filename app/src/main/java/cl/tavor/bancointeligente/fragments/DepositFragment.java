@@ -99,7 +99,7 @@ public class DepositFragment extends Fragment {
                     numberAccountEdit.setText(App.userAccount.getAccount());
                     accountHolderEdit.setText(App.userAccount.getFirstName());
                     depositerNameEdit.setText(App.userAccount.getFirstName());
-                    depositerPhoneEdit.setText("");
+                    depositerPhoneEdit.setText(App.userAccount.getPhone());
                     Gson gson = new Gson();
                     Log.i(this.getClass().getSimpleName(), "Setting user data to deposit : " + gson.toJson(App.userAccount));
                 } else {

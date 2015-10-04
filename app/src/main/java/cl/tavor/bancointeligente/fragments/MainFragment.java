@@ -83,8 +83,6 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                /*Intent intent = new Intent(getActivity(), CustomerServiceActivity.class);
-                startActivity(intent);*/
             }
         });
 

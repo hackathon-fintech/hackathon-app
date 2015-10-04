@@ -28,6 +28,10 @@ public class UserAccount  {
   private String account = null;
   @SerializedName("token")
   private String token = null;
+  @SerializedName("phone")
+  private String phone = null;
+  @SerializedName("lastName")
+  private String lastName = null;
 
   
   /**
@@ -140,6 +144,28 @@ public class UserAccount  {
   }
 
   
+  /**
+   **/
+  @ApiModelProperty(value = "")
+  public String getPhone() {
+    return phone;
+  }
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  
+  /**
+   **/
+  @ApiModelProperty(value = "")
+  public String getLastName() {
+    return lastName;
+  }
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  
 
   @Override
   public String toString()  {
@@ -156,6 +182,8 @@ public class UserAccount  {
     sb.append("  photoURL: ").append(photoURL).append("\n");
     sb.append("  account: ").append(account).append("\n");
     sb.append("  token: ").append(token).append("\n");
+    sb.append("  phone: ").append(phone).append("\n");
+    sb.append("  lastName: ").append(lastName).append("\n");
     sb.append("}\n");
     return sb.toString();
   }
