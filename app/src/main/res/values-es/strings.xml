@@ -29,5 +29,20 @@
     <string name="button_request_checkbook">Solicitar talonario de cheques</string>
     <string name="title_activity_customer_service">Servicio al cliente</string>
     <string name="button_request_promissory">Retiro de vale vista</string>
+    <string name="switch_myaccount_deposit">Depósito en mi cuenta</string>
+    <string name="title_activity_deposit">Depósito</string>
+    <string name="text_account_number">Número de cuenta</string>
+    <string name="text_holder_name">Nombre del titular</string>
+    <string name="text_depositer_name">Nombre de quien deposita</string>
+    <string name="text_depositer_phone">Teléfono</string>
+    <string name="deposit_cash">Efectivo</string>
+    <string name="deposit_document">Documento</string>
+    <string name="button_save_deposit">Guardar papeleta</string>
+    <string name="button_clear_deposit">Borrar Papeleta</string>
+    <string name="radio_bancochile_check">Cheque Banco de Chile</string>
+    <string name="radio_bank_other">Cheque otros bancos</string>
+    <string name="radio_promissory_bancochile">Vale vista Banco de Chile</string>
+    <string name="radio_bank_other_promissory">Vale vista otro banco</string>
+    <string name="edit_document_amount">Monto documento</string>
 
 </resources>

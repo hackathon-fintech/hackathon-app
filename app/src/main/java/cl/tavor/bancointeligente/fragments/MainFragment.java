@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cl.tavor.bancointeligente.activities.CashdeskActivity;
 import cl.tavor.bancointeligente.activities.CustomerServiceActivity;
+import cl.tavor.bancointeligente.activities.DepositActivity;
 import cl.tavor.bancointeligente.activities.MainActivity;
 import cl.tavor.bancointeligente.R;
 
@@ -56,8 +57,8 @@ public class MainFragment extends Fragment {
         buttonCashdesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent cashDeskIntent = new Intent(getActivity(), CashdeskActivity.class);
-                startActivity(cashDeskIntent);
+                Intent intent = new Intent(getActivity(), DepositActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -74,8 +75,8 @@ public class MainFragment extends Fragment {
         buttonSAC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent cashDeskIntent = new Intent(getActivity(), CustomerServiceActivity.class);
-                startActivity(cashDeskIntent);
+                Intent intent = new Intent(getActivity(), CustomerServiceActivity.class);
+                startActivity(intent);
             }
         });
 

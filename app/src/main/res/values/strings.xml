@@ -29,5 +29,20 @@
     <string name="title_activity_customer_service">Customer Service</string>
     <string name="button_request_checkbook">Request checkbook</string>
     <string name="button_request_promissory">Promissory retreat</string>
+    <string name="title_activity_deposit">Deposit</string>
+    <string name="switch_myaccount_deposit">Deposit in my account</string>
+    <string name="text_account_number">Account number</string>
+    <string name="text_holder_name">Holder name</string>
+    <string name="text_depositer_name">Depositer name</string>
+    <string name="text_depositer_phone">Phone</string>
+    <string name="deposit_cash">Cash</string>
+    <string name="deposit_document">Document</string>
+    <string name="button_save_deposit">Save</string>
+    <string name="button_clear_deposit">Clear</string>
+    <string name="radio_bancochile_check">Banco de Chile check</string>
+    <string name="radio_bank_other">Other bank</string>
+    <string name="radio_promissory_bancochile">Banco de Chile promissory</string>
+    <string name="radio_bank_other_promissory">Other bank promissory</string>
+    <string name="edit_document_amount">Document aumount</string>
 
 </resources>
