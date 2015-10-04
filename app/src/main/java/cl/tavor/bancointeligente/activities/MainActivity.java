@@ -1,21 +1,41 @@
 package cl.tavor.bancointeligente.activities;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.RemoteException;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Toast;
 
+import com.estimote.sdk.Beacon;
+import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.Region;
+import com.estimote.sdk.Utils;
+import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.Gson;
+
+import java.util.List;
+
+import cl.tavor.bancointeligente.App;
 import cl.tavor.bancointeligente.R;
 import cl.tavor.bancointeligente.fragments.MainFragment;
 import cl.tavor.bancointeligente.fragments.NavigationDrawerFragment;
+import io.swagger.client.ApiException;
+import io.swagger.client.api.UserApi;
+import io.swagger.client.model.UserAccount;
+import io.swagger.client.model.UserToken;
 
 
 public class MainActivity extends ActionBarActivity
@@ -30,6 +50,8 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    public Boolean isInside = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +66,102 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter != null){
+            if (!bluetoothAdapter.isEnabled()){
+                bluetoothAdapter.enable();
+            }
+        }
+
+        final Gson gson = new Gson();
+
+        App.beaconManager = new BeaconManager(this);
+        App.beaconManager.setRangingListener(new BeaconManager.RangingListener() {
+            @Override
+            public void onBeaconsDiscovered(final Region region, final List<Beacon> beacons) {
+                // Note that results are not delivered on UI thread.
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Just in case if there are multiple beacons with the same uuid, major, minor.
+                        //System.out.println("Region found: " + gson.toJson(region));
+                        if (beacons.isEmpty()){
+                            System.out.println("No beacons in range ------ ");
+                            if (isInside){
+                                Snackbar.make(findViewById(android.R.id.content), "Gracias por venir!", Snackbar.LENGTH_LONG)
+                                        .setAction("Ok", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+
+                                            }
+                                        })
+                                        .setActionTextColor(Color.WHITE)
+                                        .show();
+                            }
+                            isInside = false;
+                        }
+                        else {
+                            for (Beacon rangedBeacon : beacons) {
+                                System.out.println("Beacon in Range --- Reg:" + region.getIdentifier() + " Meters = " + Utils.computeProximity(rangedBeacon) + " +- " + Utils.computeAccuracy(rangedBeacon));
+                                System.out.println("isInside --- " + String.valueOf(isInside));
+                                if (region.getIdentifier().equals("SAC") && (Utils.computeProximity(rangedBeacon) == Utils.Proximity.NEAR || Utils.computeProximity(rangedBeacon) == Utils.Proximity.IMMEDIATE) && !isInside){
+                                    isInside = true;
+                                    Snackbar.make(findViewById(android.R.id.content), "Bienvenido!", Snackbar.LENGTH_LONG)
+                                            .setAction("Ok", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+
+                                                }
+                                            })
+                                            .setActionTextColor(Color.WHITE)
+                                            .show();
+                                    String status = "INSIDE";
+                                    //new UpdateUserStatus().execute(status);
+
+                                }
+
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        App.beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
+            @Override
+            public void onServiceReady() {
+                try {
+                    //App.beaconManager.startRanging(App.CASHBOX_REGION);
+                    //App.beaconManager.startRanging(App.EXECUTIVE_REGION);
+                    App.beaconManager.startRanging(App.SAC_REGION);
+                } catch (RemoteException e) {
+                    Toast.makeText(MainActivity.this, "Cannot start ranging, something terrible happened",
+                            Toast.LENGTH_LONG).show();
+                    Log.e(getClass().getCanonicalName(), "Cannot start ranging", e);
+                }
+            }
+        });
+
+        new Userlogin().execute();
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        try {
+            App.beaconManager.stopRanging(App.SAC_REGION);
+            App.beaconManager.disconnect();
+        } catch (RemoteException e) {
+            Log.d(this.getClass().getSimpleName(), "Error while stopping ranging", e);
+        }
+        super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -122,6 +240,64 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private class Userlogin extends AsyncTask<Object, String, Integer> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Integer doInBackground(Object... objects) {
+            UserApi usr = new UserApi();
+            try {
+                Gson gson = new Gson();
+                UserToken token = usr.login("19","sdsdf");
+                System.out.println(gson.toJson(token));
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+
+        }
+    }
+
+    private class UpdateUserStatus extends AsyncTask<String, String, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Boolean doInBackground(String... objects) {
+            String branchStatus = objects[0];
+            UserApi usr = new UserApi();
+            UserAccount usrInfo = new UserAccount();
+            usrInfo.setRut("19");
+            usrInfo.setBranchStatus(branchStatus);
+            try {
+                Gson gson = new Gson();
+                UserAccount result = usr.putJson(usrInfo);
+                Log.i(this.getClass().getSimpleName(), "Result: " + gson.toJson(result));
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+
+        }
     }
 
     /**

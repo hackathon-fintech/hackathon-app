@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:ems="10"
-                        android:id="@+id/editText_10000"
+                        android:id="@+id/editText_cash10000"
                         android:layout_margin="16dp" />
 
                 </LinearLayout>
@@ -203,7 +203,6 @@
             android:id="@+id/layout_documentDeposit"
             android:layout_margin="18dp">
 
-
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -212,7 +211,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/radio_bancochile_check"
-                    android:id="@+id/radioButton_bancoChileCheck" />
+                    android:id="@+id/radioButton_bancoChileCheck"
+                    android:checked="true"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -268,13 +268,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/button_save_deposit"
-                    android:id="@+id/button_saveDeposit"/>
+                    android:id="@+id/button_saveDeposit"
+                    android:layout_marginRight="4dp"/>
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/button_clear_deposit"
-                    android:id="@+id/button_clearDeposit" />
+                    android:id="@+id/button_clearDeposit"
+                    android:layout_marginLeft="4dp"/>
             </LinearLayout>
 
         </LinearLayout>

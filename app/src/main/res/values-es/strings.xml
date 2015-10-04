@@ -2,7 +2,7 @@
     <string name="app_name">Banco Inteligente</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="button_cashdesk">Caja</string>
+    <string name="button_cashdesk">Depósito</string>
     <string name="button_executive">Ejecutivo</string>
     <string name="button_procedures">Servicio al cliente</string>
 
@@ -44,5 +44,6 @@
     <string name="radio_promissory_bancochile">Vale vista Banco de Chile</string>
     <string name="radio_bank_other_promissory">Vale vista otro banco</string>
     <string name="edit_document_amount">Monto documento</string>
+    <string name="dialog_loading">Espere...</string>
 
 </resources>

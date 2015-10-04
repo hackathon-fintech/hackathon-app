@@ -17,6 +17,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+    }
+}
+
+ext {
+    swagger_annotations_version = "1.5.0"
+    gson_version = "2.3.1"
+    httpclient_version = "4.3.3"
+    junit_version = "4.8.1"
 }
 
 dependencies {
@@ -28,4 +42,17 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.github.johnkil.android-progressfragment:progressfragment:1.4.0'
+    compile 'com.android.support:design:22.2.0'
+
+    compile "io.swagger:swagger-annotations:$swagger_annotations_version"
+    compile "com.google.code.gson:gson:$gson_version"
+    compile "org.apache.httpcomponents:httpcore:$httpclient_version"
+    compile "org.apache.httpcomponents:httpclient:$httpclient_version"
+    //compile "org.apache.httpcomponents:httpclient-android:$httpclient_version"
+    compile ("org.apache.httpcomponents:httpcore:$httpclient_version") {
+        exclude(group: 'org.apache.httpcomponents', module: 'httpclient')
+    }
+    compile ("org.apache.httpcomponents:httpmime:$httpclient_version") {
+        exclude(group: 'org.apache.httpcomponents', module: 'httpclient')
+    }
 }

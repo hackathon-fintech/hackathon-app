@@ -14,4 +14,11 @@
         <item name="color">@android:color/white</item>
     </style>
 
+    <style name="AppThemeAlt" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/toolbar_primary</item>
+        <item name="colorPrimaryDark">@color/toolbar_primary_dark</item>
+        <item name="colorAccent">@color/accent_alt</item>
+    </style>
+
 </resources>

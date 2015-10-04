@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.Locale;
 
 import cl.tavor.bancointeligente.activities.CashdeskActivity;
 import cl.tavor.bancointeligente.activities.CustomerServiceActivity;
@@ -40,6 +43,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         ImageView imgCashdesk = (ImageView) view.findViewById(R.id.imageView_cashdesk);
         ImageLoader.getInstance().displayImage("drawable://" + R.drawable.button_cashdesk, imgCashdesk);
         ImageView imgExecutive = (ImageView) view.findViewById(R.id.imageView_executive);
@@ -48,10 +52,6 @@ public class MainFragment extends Fragment {
         ImageLoader.getInstance().displayImage("drawable://" + R.drawable.button_service, imgProcedures);
         ImageView imgEmergencies = (ImageView) view.findViewById(R.id.imageView_emergencies);
         ImageLoader.getInstance().displayImage("drawable://" + R.drawable.button_emergencies, imgEmergencies);
-
-        TextView textCashdesk = (TextView) view.findViewById(R.id.textView_cashdesk);
-        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "Roboto-Regular.ttf");
-        textCashdesk.setTypeface(typeface);
 
         CardView buttonCashdesk = (CardView) view.findViewById(R.id.cardview_cashdesk);
         buttonCashdesk.setOnClickListener(new View.OnClickListener() {
@@ -66,8 +66,7 @@ public class MainFragment extends Fragment {
         buttonExecutive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent cashDeskIntent = new Intent(getActivity(), CashdeskActivity.class);
-                startActivity(cashDeskIntent);*/
+
             }
         });
 
@@ -75,8 +74,8 @@ public class MainFragment extends Fragment {
         buttonSAC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), CustomerServiceActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(getActivity(), CustomerServiceActivity.class);
+                startActivity(intent);*/
             }
         });
 
@@ -84,10 +83,11 @@ public class MainFragment extends Fragment {
         buttonEmergencies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent cashDeskIntent = new Intent(getActivity(), CashdeskActivity.class);
-                startActivity(cashDeskIntent);*/
+
             }
         });
+
+
 
     }
 

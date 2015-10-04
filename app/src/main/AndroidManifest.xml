@@ -64,7 +64,8 @@
             android:label="@string/title_activity_deposit"
             android:parentActivityName=".activities.CashdeskActivity"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/AppThemeAlt">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cl.tavor.bancointeligente.activities.CashdeskActivity" />
