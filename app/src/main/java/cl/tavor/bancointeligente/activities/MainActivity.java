@@ -1,6 +1,7 @@
 package cl.tavor.bancointeligente.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -97,8 +98,8 @@ public class MainActivity extends ActionBarActivity
                             }
                             App.isInside = false;
                             if (App.userAccount != null){
-                                String status = "";
-                                new UpdateUserStatus().execute(status);
+                                App.userAccount.setBranchStatus("");
+                                new UpdateUserStatus("UPDATE_INSIDE").execute();
                             }
 
                         }
@@ -146,8 +147,8 @@ public class MainActivity extends ActionBarActivity
                                                 .show();
                                     }
                                     if (App.userAccount != null){
-                                        String status = "INSIDE";
-                                        new UpdateUserStatus().execute(status);
+                                        App.userAccount.setBranchStatus("INSIDE");
+                                        new UpdateUserStatus("UPDATE_INSIDE").execute();
                                     }
                                 }
 
@@ -264,7 +265,14 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_assitance) {
+            if (!App.userAccount.getSpecialAssistance()){
+                App.userAccount.setSpecialAssistance(true);
+            }
+            else {
+                App.userAccount.setSpecialAssistance(false);
+            }
+            new UpdateUserStatus("UPDATE_ASSISTANCE").execute();
             return true;
         }
 
@@ -276,7 +284,6 @@ public class MainActivity extends ActionBarActivity
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
 
         @Override
@@ -301,25 +308,36 @@ public class MainActivity extends ActionBarActivity
 
     private class UpdateUserStatus extends AsyncTask<String, String, Boolean> {
 
+        private String action;
+        private ProgressDialog pDialog;
+
+        public UpdateUserStatus(String action){
+            this.action = action;
+        }
+
         @Override
         protected void onPreExecute() {
+            if (action.equals("UPDATE_ASSISTANCE")){
+                pDialog = new ProgressDialog(MainActivity.this);
+                pDialog.setMessage(getString(R.string.dialog_loading));
+                pDialog.setIndeterminate(true);
+                pDialog.show();
+            }
             super.onPreExecute();
         }
 
         @Override
         protected Boolean doInBackground(String... objects) {
-            String branchStatus = objects[0];
             UserApi usr = new UserApi();
-            App.userAccount.setBranchStatus(branchStatus);
-            if (branchStatus.equals("INSIDE")){
+            if (App.userAccount.getBranchStatus().equals("INSIDE")){
                 App.userAccount.setBranchCode("MONEDA");
             }
             else {
                 App.userAccount.setBranchCode("");
             }
-            Log.i(this.getClass().getSimpleName(), "Setting branch status: " + branchStatus);
+            Gson gson = new Gson();
+            Log.i(this.getClass().getSimpleName(), "User data update result: " + gson.toJson(App.userAccount));
             try {
-                Gson gson = new Gson();
                 UserAccount result = usr.putJson(App.userAccount.getToken(),App.userAccount);
                 App.userAccount = result;
                 Log.i(this.getClass().getSimpleName(), "Result: " + gson.toJson(result));
@@ -331,6 +349,15 @@ public class MainActivity extends ActionBarActivity
 
         @Override
         protected void onPostExecute(Boolean result) {
+            if (action.equals("UPDATE_ASSISTANCE")){
+                pDialog.dismiss();
+                if (App.userAccount.getSpecialAssistance()){
+                    Toast.makeText(MainActivity.this, "Se ha habilitado la asistencia en sucursal.", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "Se ha deshabilitado la asistencia en sucursal.", Toast.LENGTH_LONG).show();
+                }
+            }
 
         }
     }
