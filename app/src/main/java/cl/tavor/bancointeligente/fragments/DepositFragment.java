@@ -3,9 +3,11 @@ package cl.tavor.bancointeligente.fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -28,6 +30,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.tavor.bancointeligente.App;
 import cl.tavor.bancointeligente.R;
 import cl.tavor.bancointeligente.activities.CustomerServiceActivity;
 import cl.tavor.bancointeligente.activities.DepositActivity;
@@ -56,13 +59,16 @@ public class DepositFragment extends Fragment {
     private CheckBox cashCheckbox;
     private CheckBox docCheckbox;
     private Double amount = 0.0;
-
+    private EditText cash20000;
+    private EditText cash10000;
+    private EditText cash5000;
+    private EditText cash1000;
+    private EditText cashChange;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_deposit, container, false);
-        //return super.onCreateView(inflater, container, savedInstanceState);
         return view;
     }
 
@@ -75,6 +81,12 @@ public class DepositFragment extends Fragment {
         depositerNameEdit = (EditText) view.findViewById(R.id.editText_depositerName);
         depositerPhoneEdit = (EditText) view.findViewById(R.id.editText_depositerPhone);
 
+        cash20000 = (EditText) view.findViewById(R.id.editText_cash20000);
+        cash10000 = (EditText) view.findViewById(R.id.editText_cash10000);
+        cash5000 = (EditText) view.findViewById(R.id.editText_cash5000);
+        cash1000 = (EditText) view.findViewById(R.id.editText_cash1000);
+        cashChange = (EditText) view.findViewById(R.id.editText_cash500);
+
         Switch myAccountSwitch = (Switch) view.findViewById(R.id.switch_myAccount);
         myAccountSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -84,11 +96,21 @@ public class DepositFragment extends Fragment {
                     accountHolderEdit.setVisibility(View.GONE);
                     depositerNameEdit.setVisibility(View.GONE);
                     depositerPhoneEdit.setVisibility(View.GONE);
+                    numberAccountEdit.setText(App.userAccount.getAccount());
+                    accountHolderEdit.setText(App.userAccount.getFirstName());
+                    depositerNameEdit.setText(App.userAccount.getFirstName());
+                    depositerPhoneEdit.setText("");
+                    Gson gson = new Gson();
+                    Log.i(this.getClass().getSimpleName(), "Setting user data to deposit : " + gson.toJson(App.userAccount));
                 } else {
                     numberAccountEdit.setVisibility(View.VISIBLE);
                     accountHolderEdit.setVisibility(View.VISIBLE);
                     depositerNameEdit.setVisibility(View.VISIBLE);
                     depositerPhoneEdit.setVisibility(View.VISIBLE);
+                    numberAccountEdit.setText("");
+                    accountHolderEdit.setText("");
+                    depositerNameEdit.setText("");
+                    depositerPhoneEdit.setText("");
                 }
             }
         });
@@ -130,18 +152,14 @@ public class DepositFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+
                 if (cashCheckbox.isChecked()){
-                    EditText cash20000 = (EditText) view.findViewById(R.id.editText_cash20000);
-                    EditText cash10000 = (EditText) view.findViewById(R.id.editText_cash10000);
-                    EditText cash5000 = (EditText) view.findViewById(R.id.editText_cash5000);
-                    EditText cash1000 = (EditText) view.findViewById(R.id.editText_cash1000);
-                    EditText cash500 = (EditText) view.findViewById(R.id.editText_cash500);
                     try {
                         amount = (!cash20000.getText().toString().isEmpty() ? Double.valueOf(cash20000.getText().toString()) : 0.0) +
                                 (!cash10000.getText().toString().isEmpty() ? Double.valueOf(cash10000.getText().toString()) : 0.0) +
                                 (!cash5000.getText().toString().isEmpty() ? Double.valueOf(cash5000.getText().toString()) : 0.0) +
                                 (!cash1000.getText().toString().isEmpty() ? Double.valueOf(cash1000.getText().toString()) : 0.0) +
-                                (!cash500.getText().toString().isEmpty() ? Double.valueOf(cash500.getText().toString()) : 0.0);
+                                (!cashChange.getText().toString().isEmpty() ? Double.valueOf(cashChange.getText().toString()) : 0.0);
                     }
                     catch (NumberFormatException e){
                         Toast.makeText(getActivity(), "Falta monto.", Toast.LENGTH_SHORT).show();
@@ -210,22 +228,43 @@ public class DepositFragment extends Fragment {
             deposit.setToName(accountHolderEdit.getText().toString());
             deposit.setFromName(depositerNameEdit.getText().toString());
             deposit.setFromPhone(depositerPhoneEdit.getText().toString());
-            DepositSlipDetail detail = new DepositSlipDetail();
+
+            List<DepositSlipDetail> detailList = new ArrayList<>();
             if (cashCheckbox.isChecked()){
-                detail.setType("CASH");
+                DepositSlipDetail detail20k = new DepositSlipDetail();
+                detail20k.setType("20000");
+                detail20k.setAmount(!cash20000.getText().toString().isEmpty() ? Double.valueOf(cash20000.getText().toString()) : 0.0);
+                DepositSlipDetail detail10k = new DepositSlipDetail();
+                detail10k.setType("10000");
+                detail10k.setAmount(!cash10000.getText().toString().isEmpty() ? Double.valueOf(cash10000.getText().toString()) : 0.0);
+                DepositSlipDetail detail5k = new DepositSlipDetail();
+                detail5k.setType("5000");
+                detail5k.setAmount(!cash5000.getText().toString().isEmpty() ? Double.valueOf(cash5000.getText().toString()) : 0.0);
+                DepositSlipDetail detail1k = new DepositSlipDetail();
+                detail1k.setType("1000");
+                detail1k.setAmount(!cash1000.getText().toString().isEmpty() ? Double.valueOf(cash1000.getText().toString()) : 0.0);
+                DepositSlipDetail detailCoins = new DepositSlipDetail();
+                detailCoins.setType("CHANGE");
+                detailCoins.setAmount(!cashChange.getText().toString().isEmpty() ? Double.valueOf(cashChange.getText().toString()) : 0.0);
+                detailList.add(detail20k);
+                detailList.add(detail10k);
+                detailList.add(detail5k);
+                detailList.add(detail1k);
+                detailList.add(detailCoins);
             }
             else if (docCheckbox.isChecked()){
+                DepositSlipDetail detail = new DepositSlipDetail();
                 detail.setType("CHECK");
+                detailList.add(detail);
+                detail.setAmount(amount);
             }
-            detail.setAmount(amount);
-            List<DepositSlipDetail> detailList = new ArrayList<>();
-            detailList.add(detail);
             deposit.setDetail(detailList);
             Gson gson = new Gson();
             Log.i(this.getClass().getSimpleName(), "Deposit: " + gson.toJson(deposit));
             DepositSlip result;
             try {
-                result = branch.putJson("19", deposit);
+                result = branch.putJson(App.userAccount.getToken(), App.userAccount.getRut(), deposit);
+                App.depositId = result.getDepositId();
                 Log.i(this.getClass().getSimpleName(), "Result: " + gson.toJson(result));
             } catch (ApiException e) {
                 e.printStackTrace();
@@ -236,6 +275,15 @@ public class DepositFragment extends Fragment {
         @Override
         protected void onPostExecute(Integer result) {
             pDialog.dismiss();
+            if (!App.isInside){
+                Toast.makeText(getActivity(), "Su papeleta ha quedado en cola. Dirígase a la sucursal.", Toast.LENGTH_LONG).show();
+                App.depositRequested = true;
+            }
+            else {
+                Toast.makeText(getActivity(), "Se ha enviado su papeleta. Su número de atención es: " + App.depositId, Toast.LENGTH_LONG).show();
+            }
+            getActivity().finish();
+
         }
     }
 

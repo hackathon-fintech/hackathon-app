@@ -14,6 +14,19 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import io.swagger.client.model.UserAccount;
+
 /**
  * Created by gustavo on 10/3/15.
  */
@@ -22,12 +35,18 @@ public class App extends Application {
 
     public static final String ESTIMOTE_APP_ID = "app_1g8ts8twhk";
     public static final String ESTIMOTE_APP_TOKEN = "77eb17285d7fe1ac6b0db2850d40f36d";
+    private static final double RELATIVE_START_POS = 320.0 / 1110.0;
+    private static final double RELATIVE_STOP_POS = 885.0 / 1110.0;
     public static BeaconManager beaconManager;
-    public static final Region ALL_ESTIMOTE_BEACONS_REGION = new Region("rid", null, null, null);
-    public static final Region CASHBOX_REGION = new Region("Caja", "FEE272ED-60A1-8AE0-C068-FC76E0BBF3A3", null, null);
-    public static final Region EXECUTIVE_REGION = new Region("Ejecutivo", "3AF4E898-36EE-BE7D-D065-175F4DCC3E27", null, null);
+    public static final Region ALL_ESTIMOTE_BEACONS_REGION = new Region("ALL", null, null, null);
+    public static final Region CASHBOX_REGION = new Region("SAC2", "FEE272ED-60A1-8AE0-C068-FC76E0BBF3A3", null, null);
+    public static final Region EXECUTIVE_REGION = new Region("SAC1", "3AF4E898-36EE-BE7D-D065-175F4DCC3E27", null, null);
     public static final Region SAC_REGION = new Region("SAC", "B0E2AD3B-D762-4258-86A3-7E4A7E74A4D6", null, null);
     public static Boolean sacRequested = false;
+    public static Boolean isInside = false;
+    public static Boolean depositRequested = false;
+    public static UserAccount userAccount;
+    public static Long depositId;
 
     @Override
     public void onCreate() {
@@ -40,6 +59,39 @@ public class App extends Application {
         // Configure verbose debug logging.
         EstimoteSDK.enableDebugLogging(true);
 
+        TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    @Override
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                    }
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                    }
+                }
+        };
+        SSLContext sc = null;
+        try {
+            sc = SSLContext.getInstance("SSL");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        try {
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        HostnameVerifier allHostsValid = new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        };
+        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
     }
 
 

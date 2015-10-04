@@ -179,7 +179,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$500"
+                        android:text="Monedas"
                         android:textStyle="bold"
                         android:layout_gravity="center" />
 
@@ -265,10 +265,12 @@
                 android:layout_gravity="center">
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="164dp"
                     android:layout_height="wrap_content"
                     android:text="@string/button_save_deposit"
                     android:id="@+id/button_saveDeposit"
+                    android:background="@drawable/button_color"
+                    android:textColor="@android:color/white"
                     android:layout_marginRight="4dp"/>
 
                 <Button
@@ -276,7 +278,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/button_clear_deposit"
                     android:id="@+id/button_clearDeposit"
-                    android:layout_marginLeft="4dp"/>
+                    android:layout_marginLeft="4dp"
+                    android:visibility="gone"/>
             </LinearLayout>
 
         </LinearLayout>

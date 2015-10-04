@@ -29,8 +29,7 @@ public class BillPaymentActivity extends ActionBarActivity {
         buttonCashdesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent cashDeskIntent = new Intent(CashdeskActivity.this, DepositsActivity.class);
-                startActivity(cashDeskIntent);*/
+
             }
         });
 
@@ -38,8 +37,7 @@ public class BillPaymentActivity extends ActionBarActivity {
         buttonExecutive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent cashDeskIntent = new Intent(getActivity(), CashdeskActivity.class);
-                startActivity(cashDeskIntent);*/
+
             }
         });
     }

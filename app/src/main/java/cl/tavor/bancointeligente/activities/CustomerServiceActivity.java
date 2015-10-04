@@ -28,8 +28,7 @@ public class CustomerServiceActivity extends ActionBarActivity {
         buttonCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent cashDeskIntent = new Intent(CashdeskActivity.this, DepositsActivity.class);
-                startActivity(cashDeskIntent);*/
+
             }
         });
 
@@ -37,8 +36,7 @@ public class CustomerServiceActivity extends ActionBarActivity {
         buttonPromissory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent cashDeskIntent = new Intent(getActivity(), CashdeskActivity.class);
-                startActivity(cashDeskIntent);*/
+
             }
         });
     }

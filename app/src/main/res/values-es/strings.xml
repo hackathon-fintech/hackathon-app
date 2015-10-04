@@ -37,7 +37,7 @@
     <string name="text_depositer_phone">Teléfono</string>
     <string name="deposit_cash">Efectivo</string>
     <string name="deposit_document">Documento</string>
-    <string name="button_save_deposit">Guardar papeleta</string>
+    <string name="button_save_deposit">Enviar papeleta</string>
     <string name="button_clear_deposit">Borrar Papeleta</string>
     <string name="radio_bancochile_check">Cheque Banco de Chile</string>
     <string name="radio_bank_other">Cheque otros bancos</string>

@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.Locale;
 
+import cl.tavor.bancointeligente.App;
 import cl.tavor.bancointeligente.activities.CashdeskActivity;
 import cl.tavor.bancointeligente.activities.CustomerServiceActivity;
 import cl.tavor.bancointeligente.activities.DepositActivity;
@@ -35,7 +37,6 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_main, container, false);
-        //return super.onCreateView(inflater, container, savedInstanceState);
         return view;
     }
 
@@ -66,6 +67,13 @@ public class MainFragment extends Fragment {
         buttonExecutive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (App.isInside){
+                    Toast.makeText(getActivity(), "Se le notificará a un ejecutivo que ud. está en la sucursal.", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Se le notificará a un ejecutivo de su llegada una vez que llegue al banco.", Toast.LENGTH_LONG).show();
+                    App.sacRequested = true;
+                }
 
             }
         });
@@ -74,6 +82,7 @@ public class MainFragment extends Fragment {
         buttonSAC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 /*Intent intent = new Intent(getActivity(), CustomerServiceActivity.class);
                 startActivity(intent);*/
             }
