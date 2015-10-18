@@ -95,11 +95,12 @@ public class MainActivity extends ActionBarActivity
                                         })
                                         .setActionTextColor(Color.WHITE)
                                         .show();
+                                if (App.userAccount != null){
+                                    App.userAccount.setBranchStatus("");
+                                    new UpdateUserStatus("UPDATE_INSIDE").execute();
+                                }
                             }
-                            if (App.userAccount != null){
-                                App.userAccount.setBranchStatus("");
-                                new UpdateUserStatus("UPDATE_INSIDE").execute();
-                            }
+
                             App.isInside = false;
                         }
                         else {
@@ -132,6 +133,10 @@ public class MainActivity extends ActionBarActivity
                                                 })
                                                 .setActionTextColor(Color.WHITE)
                                                 .show();
+                                        if (App.userAccount != null){
+                                            App.userAccount.setBranchStatus("INSIDE");
+                                            new UpdateUserStatus("UPDATE_INSIDE").execute();
+                                        }
                                         App.depositRequested = false;
                                     }
                                     else {
@@ -144,10 +149,10 @@ public class MainActivity extends ActionBarActivity
                                                 })
                                                 .setActionTextColor(Color.WHITE)
                                                 .show();
-                                    }
-                                    if (App.userAccount != null){
-                                        App.userAccount.setBranchStatus("INSIDE");
-                                        new UpdateUserStatus("UPDATE_INSIDE").execute();
+                                        if (App.userAccount != null){
+                                            App.userAccount.setBranchStatus("INSIDE");
+                                            new UpdateUserStatus("UPDATE_INSIDE").execute();
+                                        }
                                     }
                                 }
 
@@ -335,7 +340,7 @@ public class MainActivity extends ActionBarActivity
                 App.userAccount.setBranchCode("");
             }
             Gson gson = new Gson();
-            Log.i(this.getClass().getSimpleName(), "User data update result: " + gson.toJson(App.userAccount));
+            //Log.i(this.getClass().getSimpleName(), "User data update result: " + gson.toJson(App.userAccount));
             try {
                 UserAccount result = usr.putJson(App.userAccount.getToken(),App.userAccount);
                 App.userAccount = result;

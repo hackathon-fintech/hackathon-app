@@ -39,8 +39,8 @@ public class App extends Application {
     private static final double RELATIVE_STOP_POS = 885.0 / 1110.0;
     public static BeaconManager beaconManager;
     public static final Region ALL_ESTIMOTE_BEACONS_REGION = new Region("ALL", null, null, null);
-    public static final Region CASHBOX_REGION = new Region("SAC2", "FEE272ED-60A1-8AE0-C068-FC76E0BBF3A3", null, null);
-    public static final Region EXECUTIVE_REGION = new Region("SAC1", "3AF4E898-36EE-BE7D-D065-175F4DCC3E27", null, null);
+    public static final Region CASHBOX_REGION = new Region("SAC", "FEE272ED-60A1-8AE0-C068-FC76E0BBF3A3", null, null);
+    public static final Region EXECUTIVE_REGION = new Region("SAC", "3AF4E898-36EE-BE7D-D065-175F4DCC3E27", null, null);
     public static final Region SAC_REGION = new Region("SAC", "B0E2AD3B-D762-4258-86A3-7E4A7E74A4D6", null, null);
     public static Boolean sacRequested = false;
     public static Boolean isInside = false;
